@@ -132,3 +132,12 @@ if (iris && !reduceMotion && window.matchMedia('(hover: none)').matches) {
     }, 350);
   }, { passive: true });
 }
+
+// O botão flutuante do WhatsApp sai de cena enquanto a seção de contato está na tela.
+const waFloat = document.querySelector('.wa-float');
+const visit = document.querySelector('#visite');
+if (waFloat && visit && 'IntersectionObserver' in window) {
+  new IntersectionObserver(([entry]) => {
+    waFloat.classList.toggle('is-hidden', entry.isIntersecting);
+  }, { threshold: 0.2 }).observe(visit);
+}
