@@ -150,13 +150,29 @@ code { font-size: .9em; }
 .chart-hint { margin: 1.4rem 0 0; font-size: var(--step--1); color: var(--muted); }
 
 .hero-side { display: grid; gap: 1.75rem; align-content: start; }
-.photo-hero { width: min(100%, 420px); }
-.photo-hero img {
-  width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%;
-  border-radius: var(--radius-photo);
+.photo-hero { width: min(100%, 440px); }
+/* The photo sits still inside a lens; the trial-frame axis dial turns around it */
+.lens { position: relative; aspect-ratio: 1; }
+.lens img {
+  position: absolute; inset: 13%; width: 74%; height: 74%;
+  object-fit: cover; object-position: 50% 22%;
+  border-radius: 50%;
   background: var(--sand);
+  box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px rgba(168, 130, 58, .5);
 }
-.photo-hero figcaption { margin-top: .75rem; font-size: var(--step--1); color: var(--muted); }
+.lens-dial { position: absolute; inset: 0; width: 100%; height: 100%; animation: lens-spin 90s linear infinite; }
+.lens-dial .tick { stroke: var(--forest); stroke-width: .6; }
+.lens-dial .tick-major { stroke-width: 1.1; }
+.lens-dial .deg { font: 6px var(--body); fill: var(--gold); text-anchor: middle; dominant-baseline: middle; }
+.lens-dial .rim { fill: none; stroke: var(--forest); stroke-width: .8; }
+.lens-ring {
+  position: absolute; inset: 8.5%; border-radius: 50%;
+  border: 1.5px dashed var(--gold-soft);
+  animation: lens-spin 60s linear infinite reverse;
+}
+@keyframes lens-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lens-dial, .lens-ring { animation: none; } }
+.photo-hero figcaption { margin-top: .5rem; text-align: center; font-size: var(--step--1); color: var(--muted); }
 .lead { font-size: var(--step-1); line-height: 1.5; }
 
 /* Services */

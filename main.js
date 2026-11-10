@@ -66,3 +66,31 @@ if (iris && mark && !reduceMotion) {
   };
   setTimeout(blink, 2200);
 }
+
+// Disco graduado (escala de eixo da armação de provas) em volta da foto.
+const dial = document.querySelector('.lens-dial');
+if (dial) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (tag, attrs) => {
+    const el = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    dial.appendChild(el);
+    return el;
+  };
+  add('circle', { class: 'rim', cx: 100, cy: 100, r: 98 });
+  add('circle', { class: 'rim', cx: 100, cy: 100, r: 82 });
+  for (let a = 0; a < 360; a += 5) {
+    const rad = (a * Math.PI) / 180;
+    const major = a % 15 === 0;
+    const r1 = 98, r2 = major ? 91 : 94.5;
+    add('line', {
+      class: major ? 'tick tick-major' : 'tick',
+      x1: 100 + r1 * Math.cos(rad), y1: 100 - r1 * Math.sin(rad),
+      x2: 100 + r2 * Math.cos(rad), y2: 100 - r2 * Math.sin(rad),
+    });
+    if (a % 30 === 0) {
+      const t = add('text', { class: 'deg', x: 100 + 86.5 * Math.cos(rad), y: 100 - 86.5 * Math.sin(rad) });
+      t.textContent = `${a % 180 === 0 && a ? 180 : a % 180}°`;
+    }
+  }
+}
