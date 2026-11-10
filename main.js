@@ -141,3 +141,6 @@ if (waFloat && visit && 'IntersectionObserver' in window) {
     waFloat.classList.toggle('is-hidden', entry.isIntersecting);
   }, { threshold: 0.2 }).observe(visit);
 }
+
+// Ano atual no aviso de direitos reservados.
+document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Date().getFullYear(); });
