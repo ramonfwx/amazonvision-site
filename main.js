@@ -94,3 +94,33 @@ if (dial) {
     }
   }
 }
+
+// Demonstração automática: depois da abertura, as linhas desfocadas entram em foco uma vez
+// e voltam a desfocar, para mostrar (principalmente no celular) que dá para focá-las.
+if (!reduceMotion) {
+  const blurred = [...document.querySelectorAll('.chart-line.blur')];
+  setTimeout(() => {
+    blurred.forEach((line, i) => {
+      setTimeout(() => line.classList.add('demo'), i * 260);
+      setTimeout(() => line.classList.remove('demo'), 1100 + i * 260);
+    });
+  }, 2300);
+}
+
+// No celular não há cursor: o olho do logo olha para onde a página está rolando.
+if (iris && !reduceMotion && window.matchMedia('(hover: none)').matches) {
+  let lastY = window.scrollY;
+  let idle;
+  window.addEventListener('scroll', () => {
+    const dy = window.scrollY - lastY;
+    lastY = window.scrollY;
+    if (!dy) return;
+    iris.style.setProperty('--ey', `${dy > 0 ? 3.5 : -3.5}px`);
+    iris.style.setProperty('--ex', `${dy > 0 ? 1.5 : -1.5}px`);
+    clearTimeout(idle);
+    idle = setTimeout(() => {
+      iris.style.setProperty('--ey', '0px');
+      iris.style.setProperty('--ex', '0px');
+    }, 350);
+  }, { passive: true });
+}
