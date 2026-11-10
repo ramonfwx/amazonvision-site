@@ -1,10 +1,9 @@
-// Número de WhatsApp da clínica, só dígitos com DDI e DDD. Ex.: '5593999999999'
-const WHATSAPP = '559391808800';
-const WHATSAPP_MSG = 'Olá! Vim pelo site e gostaria de agendar uma consulta na Amazon Vision.';
+// Link oficial de mensagem do WhatsApp da clínica (gerado pelo WhatsApp Business).
+const WHATSAPP_URL = 'https://api.whatsapp.com/message/W34DGMCIVCPEF1?autoload=1&app_absent=0';
 
 const waLinks = document.querySelectorAll('.js-whatsapp');
-if (WHATSAPP) {
-  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
+if (WHATSAPP_URL) {
+  const url = WHATSAPP_URL;
   waLinks.forEach((a) => {
     a.href = url;
     a.target = '_blank';
