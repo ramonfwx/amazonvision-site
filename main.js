@@ -12,16 +12,14 @@ if (WHATSAPP_URL) {
   document.querySelectorAll('.js-whatsapp-missing').forEach((el) => el.remove());
 }
 
-// Tabela de letras: as linhas desfocadas entram em foco ao passar o cursor, tocar ou focar.
+// Tabela de letras: as linhas desfocadas entram em foco ao passar o cursor, tocar ou focar
+// pelo teclado, e continuam nítidas. Ao abrir o site de novo, começam desfocadas outra vez.
 document.querySelectorAll('.chart-line.blur').forEach((line) => {
   line.tabIndex = 0;
   const focus = () => line.classList.add('focused');
-  const unfocus = () => line.classList.remove('focused');
-  line.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') focus(); });
-  line.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') unfocus(); });
-  line.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') line.classList.toggle('focused'); });
+  line.addEventListener('pointerenter', focus);
+  line.addEventListener('pointerup', focus);
   line.addEventListener('focus', focus);
-  line.addEventListener('blur', unfocus);
 });
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -95,16 +93,26 @@ if (dial) {
   }
 }
 
-// Demonstração automática: depois da abertura, as linhas desfocadas entram em foco uma vez
-// e voltam a desfocar, para mostrar (principalmente no celular) que dá para focá-las.
-if (!reduceMotion) {
+// Celular (sem mouse): depois da abertura, as linhas desfocadas entram em foco sozinhas,
+// devagar, uma de cada vez, e ficam nítidas.
+// Computador: uma demonstração rápida mostra que dá para focar passando o mouse.
+{
   const blurred = [...document.querySelectorAll('.chart-line.blur')];
-  setTimeout(() => {
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if (isTouch) {
     blurred.forEach((line, i) => {
-      setTimeout(() => line.classList.add('demo'), i * 260);
-      setTimeout(() => line.classList.remove('demo'), 1100 + i * 260);
+      if (reduceMotion) { line.classList.add('focused'); return; }
+      line.classList.add('slow');
+      setTimeout(() => line.classList.add('focused'), 2000 + i * 900);
     });
-  }, 2300);
+  } else if (!reduceMotion) {
+    setTimeout(() => {
+      blurred.forEach((line, i) => {
+        setTimeout(() => line.classList.add('demo'), i * 260);
+        setTimeout(() => line.classList.remove('demo'), 1100 + i * 260);
+      });
+    }, 2300);
+  }
 }
 
 // No celular não há cursor: o olho do logo olha para onde a página está rolando.

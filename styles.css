@@ -305,14 +305,13 @@ code { font-size: .9em; }
 }
 
 /* ---------- Hint text per input type ---------- */
-.hint-touch { display: none; }
 @media (hover: none) {
-  .hint-mouse { display: none; }
-  .hint-touch { display: inline; }
+  .chart-hint { display: none; }
 }
 
 /* Auto demo after load: the blurred lines sweep into focus once, then blur again */
 .chart-line.demo span { filter: none; opacity: 1; }
+.chart-line.slow span { transition-duration: 1.6s; }
 
 /* ---------- Compact phone layout ---------- */
 @media (max-width: 719px) {
