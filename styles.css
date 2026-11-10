@@ -241,3 +241,49 @@ code { font-size: .9em; }
   .chart-line span { transition: none; }
   .btn { transition: none; }
 }
+
+/* ---------- Motion: everything comes into focus, like a refraction exam ---------- */
+
+/* Header logo: the iris follows the pointer and blinks now and then */
+.eye-iris {
+  transform-box: fill-box; transform-origin: center;
+  transform: translate(var(--ex, 0px), var(--ey, 0px)) scaleY(var(--lid, 1));
+  transition: transform .18s ease-out;
+}
+
+/* Page load: chart lines resolve one after another */
+.js .chart-line span { animation: chart-in 1.1s cubic-bezier(.2, .7, .2, 1) backwards; }
+.js .l1 span { animation-delay: .1s; }
+.js .l2 span { animation-delay: .3s; }
+.js .l3 span { animation-delay: .5s; }
+.js .l4 span { animation-delay: .7s; }
+.js .l5 span { animation-delay: .85s; }
+.js .l6 span { animation-delay: 1s; }
+.js .chart-line::before { animation: fade-in .6s ease backwards; animation-delay: 1.2s; }
+@keyframes chart-in { from { filter: blur(14px); opacity: 0; transform: scale(1.04); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+/* Scroll: photos and headings arrive out of focus and sharpen in view */
+.js [data-focus] { transition: filter 1s ease, opacity 1s ease, transform 1s ease; }
+.js [data-focus]:not(.in-view) { filter: blur(12px); opacity: .35; transform: scale(.985); }
+
+/* Service icons draw themselves */
+.js .service svg * { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s ease .3s; }
+.js .service-list.in-view svg * { stroke-dashoffset: 0; }
+.js .service-list.in-view .service:nth-child(2) svg * { transition-delay: .55s; }
+.js .service-list.in-view .service:nth-child(3) svg * { transition-delay: .8s; }
+
+/* Floating WhatsApp: a soft pulse once the page has settled */
+.wa-float::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--leaf); opacity: 0;
+  animation: wa-pulse 2.4s ease-out 2.5s 3;
+}
+@keyframes wa-pulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.6); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .chart-line span, .js .chart-line::before, .wa-float::after { animation: none; }
+  .js [data-focus], .js [data-focus]:not(.in-view) { filter: none; opacity: 1; transform: none; transition: none; }
+  .js .service svg * { stroke-dashoffset: 0; transition: none; }
+  .eye-iris { transition: none; }
+}
