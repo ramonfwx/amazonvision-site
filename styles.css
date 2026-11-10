@@ -559,3 +559,73 @@ code { font-size: .9em; }
 @media (prefers-reduced-motion: reduce) {
   .mc-sharp, .mc-lens { animation: none; }
 }
+
+
+/* ---------- Mini chart as a floating badge on the hero photo ---------- */
+.mini-chart .mc-letters span:nth-child(1) { font-size: calc(var(--h) * .235); }
+.mini-chart .mc-letters span:nth-child(2) { font-size: calc(var(--h) * .163); }
+.mini-chart .mc-letters span:nth-child(3) { font-size: calc(var(--h) * .122); }
+.mini-chart .mc-letters span:nth-child(4) { font-size: calc(var(--h) * .092); }
+.mini-chart .mc-letters span:nth-child(5) { font-size: calc(var(--h) * .071); }
+.mini-chart-badge {
+  --w: 224px; --h: 158px; --r: 29px;
+  position: absolute; left: -6%; bottom: 2%; z-index: 2; margin: 0;
+  background: rgba(251, 248, 241, .94);
+  border: 1px solid rgba(168, 130, 58, .35);
+  box-shadow: 0 14px 34px rgba(30, 58, 43, .16);
+  backdrop-filter: blur(4px);
+}
+.mini-chart-badge .mc-letters { color: var(--forest); gap: 2px; }
+.mini-chart-badge .mc-blurred { opacity: .7; filter: blur(1.8px); }
+.mini-chart-badge .mc-sharp { color: var(--forest); }
+.mini-chart-badge .mc-lens { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(168, 130, 58, .14), inset 0 0 14px rgba(168, 130, 58, .12); }
+.mini-chart-badge .mc-lens::after { background: var(--gold); right: -12px; bottom: -8px; width: 16px; height: 3px; }
+@media (max-width: 719px) {
+  .mini-chart-badge { --w: 150px; --h: 106px; --r: 20px; left: -4%; bottom: 0; border-radius: 12px; }
+  .mini-chart-badge .mc-lens { border-width: 1.5px; }
+  .mini-chart-badge .mc-lens::after { right: -9px; bottom: -6px; width: 11px; height: 2px; }
+}
+
+/* ---------- Contact: "Melhor o 1 ou o 2?" refraction moment ---------- */
+.refract { margin-top: 1.75rem; width: 280px; }
+.ph-body {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 0;
+  padding: 18px 20px; border-radius: 60px;
+  background: rgba(251, 248, 241, .05);
+  border: 1px solid rgba(205, 178, 122, .22);
+}
+.ph-win {
+  position: relative; display: grid; place-items: center;
+  width: 92px; height: 92px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 248, 241, .1), rgba(251, 248, 241, .02) 70%);
+  border: 2px solid rgba(205, 178, 122, .6);
+}
+.ph-dial {
+  position: absolute; inset: -9px; border-radius: 50%;
+  border: 1.5px dashed rgba(205, 178, 122, .45);
+  animation: lens-spin 14s linear infinite;
+}
+.ph-2 .ph-dial { animation-direction: reverse; }
+.ph-bridge { width: 34px; height: 10px; border-radius: 5px; background: rgba(205, 178, 122, .35); }
+.ph-win b {
+  font-family: var(--display); font-weight: 400; font-size: 30px; letter-spacing: .12em; color: var(--paper);
+  animation: ph-a 4.8s ease-in-out infinite;
+}
+.ph-2 b { animation-name: ph-b; }
+.ph-q { margin: 1rem 0 0; text-align: center; font-family: var(--display); font-size: 1.25rem; color: rgba(251, 248, 241, .75); max-width: none; }
+.ph-q span {
+  display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%;
+  border: 1.5px solid rgba(205, 178, 122, .4); color: var(--paper);
+  animation: q-a 4.8s ease-in-out infinite;
+}
+.ph-q .q2 { animation-name: q-b; }
+@keyframes ph-a { 0%, 42% { filter: none; opacity: 1; } 50%, 92% { filter: blur(4px); opacity: .5; } 100% { filter: none; opacity: 1; } }
+@keyframes ph-b { 0%, 42% { filter: blur(4px); opacity: .5; } 50%, 92% { filter: none; opacity: 1; } 100% { filter: blur(4px); opacity: .5; } }
+@keyframes q-a { 0%, 42% { background: var(--gold-soft); color: var(--ink); border-color: var(--gold-soft); } 50%, 92% { background: transparent; color: var(--paper); border-color: rgba(205, 178, 122, .4); } 100% { background: var(--gold-soft); color: var(--ink); border-color: var(--gold-soft); } }
+@keyframes q-b { 0%, 42% { background: transparent; color: var(--paper); border-color: rgba(205, 178, 122, .4); } 50%, 92% { background: var(--gold-soft); color: var(--ink); border-color: var(--gold-soft); } 100% { background: transparent; color: var(--paper); border-color: rgba(205, 178, 122, .4); } }
+@media (max-width: 719px) {
+  .refract { margin-inline: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ph-dial, .ph-win b, .ph-q span { animation: none; }
+}
