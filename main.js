@@ -46,6 +46,7 @@ if ('IntersectionObserver' in window && !reduceMotion) {
 // Olho do logo: a íris acompanha o cursor e pisca de vez em quando.
 const iris = document.querySelector('.brand-mark .eye-iris');
 const mark = document.querySelector('.brand-mark');
+const eyeScale = Number(mark?.dataset.eyeScale || 1);
 if (iris && mark && !reduceMotion) {
   window.addEventListener('pointermove', (e) => {
     const r = mark.getBoundingClientRect();
@@ -53,8 +54,8 @@ if (iris && mark && !reduceMotion) {
     const dy = e.clientY - (r.top + r.height * 0.54);
     const dist = Math.hypot(dx, dy) || 1;
     const k = Math.min(dist / 300, 1);
-    iris.style.setProperty('--ex', `${(dx / dist) * 7 * k}px`);
-    iris.style.setProperty('--ey', `${(dy / dist) * 3.5 * k}px`);
+    iris.style.setProperty('--ex', `${(dx / dist) * 7 * k * eyeScale}px`);
+    iris.style.setProperty('--ey', `${(dy / dist) * 3.5 * k * eyeScale}px`);
   }, { passive: true });
 
   const blink = () => {
@@ -123,8 +124,8 @@ if (iris && !reduceMotion && window.matchMedia('(hover: none)').matches) {
     const dy = window.scrollY - lastY;
     lastY = window.scrollY;
     if (!dy) return;
-    iris.style.setProperty('--ey', `${dy > 0 ? 3.5 : -3.5}px`);
-    iris.style.setProperty('--ex', `${dy > 0 ? 1.5 : -1.5}px`);
+    iris.style.setProperty('--ey', `${(dy > 0 ? 3.5 : -3.5) * eyeScale}px`);
+    iris.style.setProperty('--ex', `${(dy > 0 ? 1.5 : -1.5) * eyeScale}px`);
     clearTimeout(idle);
     idle = setTimeout(() => {
       iris.style.setProperty('--ey', '0px');

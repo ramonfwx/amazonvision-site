@@ -629,3 +629,16 @@ code { font-size: .9em; }
 @media (prefers-reduced-motion: reduce) {
   .ph-dial, .ph-win b, .ph-q span { animation: none; }
 }
+
+
+/* ---------- Official logo (CorelDRAW): symbol + wordmark ---------- */
+.brand { gap: .55rem; }
+.brand-mark { width: auto; height: 2.35rem; overflow: visible; }
+.brand-word { width: auto; height: 1.75rem; }
+.footer-brand { gap: .6rem; }
+.footer-brand .footer-mark { width: auto; height: 2.3rem; }
+.footer-brand .footer-word { width: auto; height: 1.7rem; }
+@media (max-width: 719px) {
+  .brand-mark { width: auto; height: 2rem; }
+  .brand-word { height: 1.45rem; }
+}
