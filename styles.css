@@ -642,3 +642,7 @@ code { font-size: .9em; }
   .brand-mark { width: auto; height: 2rem; }
   .brand-word { height: 1.45rem; }
 }
+
+/* Letters inside the "1 ou 2?" lenses change every cycle */
+.ph-l { font-style: normal; transition: opacity .25s ease; }
+.ph-l.is-swapping { opacity: 0; }

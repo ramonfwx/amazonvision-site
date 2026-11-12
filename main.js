@@ -145,3 +145,31 @@ if (waFloat && visit && 'IntersectionObserver' in window) {
 
 // Ano atual no aviso de direitos reservados.
 document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Date().getFullYear(); });
+
+// "Melhor o 1 ou o 2?": a cada ciclo, as lentes mostram um novo par de letras da tabela de exame.
+{
+  const letters = [...document.querySelectorAll('.ph-l')];
+  const firstLens = document.querySelector('.ph-1 b');
+  if (letters.length && firstLens && !reduceMotion) {
+    const pool = 'CDEFHKLNOPRTUVZ'.split('');
+    let last = 'E F';
+    const nextPair = () => {
+      let pair;
+      do {
+        const a = pool[Math.floor(Math.random() * pool.length)];
+        let b;
+        do { b = pool[Math.floor(Math.random() * pool.length)]; } while (b === a);
+        pair = `${a} ${b}`;
+      } while (pair === last);
+      last = pair;
+      return pair;
+    };
+    firstLens.addEventListener('animationiteration', () => {
+      const pair = nextPair();
+      letters.forEach((el) => el.classList.add('is-swapping'));
+      setTimeout(() => {
+        letters.forEach((el) => { el.textContent = pair; el.classList.remove('is-swapping'); });
+      }, 250);
+    });
+  }
+}
