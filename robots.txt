@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ramonfwx.github.io/amazonvision-site/sitemap.xml

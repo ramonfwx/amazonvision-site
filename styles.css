@@ -716,3 +716,80 @@ code { font-size: .9em; }
   .about-cycle img, .about-cycle figcaption span { animation: none; }
   .about-cycle img:nth-of-type(1), .about-cycle figcaption span:nth-child(1) { opacity: 1; }
 }
+
+
+/* ---------- Como é o exame ---------- */
+.exam { position: relative; overflow: hidden; padding: clamp(3.5rem, 8vw, 6rem) 0; background: var(--paper); }
+.exam > :not(.deco) { position: relative; z-index: 1; }
+.exam-eye { width: 300px; right: -70px; top: 30px; background-color: var(--gold); opacity: .1; }
+.exam-lead { max-width: 52ch; }
+.steps { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 1.5rem; counter-reset: none; }
+.step { position: relative; padding: 1.5rem 1.4rem 1.4rem; border-radius: 16px; background: #fff; border: 1px solid rgba(30, 58, 43, .1); }
+.step-n {
+  display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; margin-bottom: .9rem;
+  border: 1.5px solid var(--gold); color: var(--forest); font-family: var(--display); font-size: 1.2rem;
+}
+.step h3 { color: var(--forest); margin-bottom: .35em; }
+.step p { margin: 0; color: var(--muted); font-size: .98rem; }
+@media (min-width: 720px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 719px) {
+  .exam { padding-block: 2.75rem; }
+  .steps { gap: .8rem; margin-top: 1.25rem; }
+  .step { display: grid; grid-template-columns: 2.6rem 1fr; column-gap: .9rem; padding: 1rem; }
+  .step-n { grid-row: span 2; margin: 0; }
+  .exam-eye { width: 190px; }
+}
+
+/* ---------- Dúvidas frequentes ---------- */
+.faq { padding: clamp(3.5rem, 8vw, 6rem) 0; background: var(--sand); }
+.faq-grid { display: grid; gap: 2rem; }
+.faq-item { border-bottom: 1px solid rgba(30, 58, 43, .18); }
+.faq-item summary {
+  list-style: none; cursor: pointer; padding: 1.1rem 2.2rem 1.1rem 0; position: relative;
+  font-family: var(--display); font-size: 1.2rem; color: var(--forest);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: ""; position: absolute; right: .3rem; top: 50%; width: .7rem; height: .7rem; margin-top: -.5rem;
+  border-right: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold); transform: rotate(45deg); transition: transform .25s ease;
+}
+.faq-item[open] summary::after { transform: rotate(225deg); margin-top: -.15rem; }
+.faq-item p { margin: 0 0 1.2rem; color: var(--ink); }
+@media (min-width: 960px) { .faq-grid { grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; } }
+@media (max-width: 719px) { .faq { padding-block: 2.75rem; } .faq-item summary { font-size: 1.08rem; } }
+
+/* ---------- Mapa ---------- */
+.map-box {
+  margin-top: 1rem; height: 220px; border-radius: 14px; overflow: hidden; position: relative;
+  border: 1px solid rgba(205, 178, 122, .3); background: rgba(251, 248, 241, .05);
+  display: grid; place-items: center; align-content: center; gap: .6rem; text-align: center;
+}
+.map-box svg { width: 2.2rem; fill: none; stroke: var(--gold-soft); stroke-width: 1.6; }
+.map-box small { color: rgba(251, 248, 241, .55); font-size: .75rem; }
+.map-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Aberto agora ---------- */
+.open-badge {
+  display: inline-flex; align-items: center; gap: .4rem; margin-left: .6rem; vertical-align: middle;
+  padding: .2rem .65rem; border-radius: 999px; font-family: var(--body); font-size: .75rem; font-weight: 600;
+  background: rgba(205, 178, 122, .14); color: var(--gold-soft);
+}
+.open-badge::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+.open-badge.is-open { background: rgba(110, 190, 120, .16); color: #8fd39a; }
+.open-badge.is-open::before { animation: open-pulse 2s ease-in-out infinite; }
+@keyframes open-pulse { 50% { opacity: .35; } }
+
+/* ---------- Zoom suave nas imagens que alternam ---------- */
+.about-cycle img { animation-name: about-cycle, about-zoom; animation-duration: 18s, 18s; animation-timing-function: ease-in-out, linear; animation-iteration-count: infinite, infinite; }
+@keyframes about-zoom { 0% { transform: scale(1); } 36% { transform: scale(1.09); } 37%, 100% { transform: scale(1); } }
+.g-swap .g-open img:first-child { animation: swap-zoom-a 10s linear infinite; }
+.g-swap .swap-b { animation: swap-fade 10s ease-in-out infinite, swap-zoom-b 10s linear infinite; }
+@keyframes swap-zoom-a { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 51%, 100% { transform: scale(1); } }
+@keyframes swap-zoom-b { 0%, 42% { transform: scale(1); } 100% { transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-cycle img, .g-swap .g-open img:first-child, .g-swap .swap-b { animation: none; }
+  .about-cycle img:nth-of-type(1) { opacity: 1; }
+  .g-swap .swap-b { opacity: 0; }
+  .faq-item summary::after, .open-badge.is-open::before { transition: none; animation: none; }
+}

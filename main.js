@@ -220,3 +220,63 @@ document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Dat
     });
   }
 }
+
+// Mapa: só carrega o Google Maps quando a pessoa pede (sem rastreio antes do clique).
+document.querySelectorAll('.map-box').forEach((box) => {
+  box.querySelector('.map-load')?.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = box.dataset.src;
+    f.title = 'Mapa: Amazon Vision, Av. Dr. Hugo de Mendonça, 402, Itaituba';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    box.innerHTML = '';
+    box.appendChild(f);
+  });
+});
+
+// Selo "Aberto agora": compara a hora de Itaituba (fuso de Belém) com a tabela de horários.
+{
+  const badge = document.querySelector('.open-badge');
+  if (badge) {
+    // 0 = domingo ... 6 = sábado; minutos desde 0h
+    const H = (h, m = 0) => h * 60 + m;
+    const SCHEDULE = {
+      1: [[H(8), H(12)], [H(13), H(14)]],
+      2: [[H(8), H(12)]],
+      3: [[H(8), H(12)], [H(13), H(14)]],
+      4: [[H(8), H(12)]],
+      5: [[H(8), H(12)]],
+      6: [[H(9), H(12)]],
+    };
+    const DAYS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+    const fmt = (min) => `${Math.floor(min / 60)}h${min % 60 ? String(min % 60).padStart(2, '0') : ''}`;
+    const update = () => {
+      const local = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Belem' }));
+      const day = local.getDay();
+      const now = local.getHours() * 60 + local.getMinutes();
+      const today = SCHEDULE[day] || [];
+      const open = today.find(([a, b]) => now >= a && now < b);
+      if (open) {
+        badge.textContent = `Aberto agora, até ${fmt(open[1])}`;
+        badge.classList.add('is-open');
+      } else {
+        badge.classList.remove('is-open');
+        const laterToday = today.find(([a]) => a > now);
+        if (laterToday) {
+          badge.textContent = `Fechado agora, abre às ${fmt(laterToday[0])}`;
+        } else {
+          for (let i = 1; i <= 7; i++) {
+            const d = (day + i) % 7;
+            if (SCHEDULE[d]) {
+              badge.textContent = `Fechado agora, abre ${i === 1 ? 'amanhã' : DAYS[d]} às ${fmt(SCHEDULE[d][0][0])}`;
+              break;
+            }
+          }
+        }
+      }
+      badge.hidden = false;
+    };
+    update();
+    setInterval(update, 60000);
+  }
+}
