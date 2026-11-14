@@ -173,3 +173,38 @@ document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Dat
     });
   }
 }
+
+// Galeria: clicar numa foto abre a versão grande; setas e Esc navegam/fecham.
+{
+  const dlg = document.querySelector('.lightbox');
+  const buttons = [...document.querySelectorAll('.g-open')];
+  if (dlg && buttons.length && typeof dlg.showModal === 'function') {
+    const img = dlg.querySelector('.lb-img');
+    const cap = dlg.querySelector('.lb-cap');
+    let current = 0;
+    const show = (i) => {
+      current = (i + buttons.length) % buttons.length;
+      const thumb = buttons[current].querySelector('img');
+      img.src = thumb.dataset.full;
+      img.alt = thumb.alt;
+      cap.textContent = buttons[current].closest('figure').querySelector('figcaption').textContent;
+    };
+    buttons.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg.showModal(); }));
+    dlg.querySelector('.lb-prev').addEventListener('click', () => show(current - 1));
+    dlg.querySelector('.lb-next').addEventListener('click', () => show(current + 1));
+    dlg.querySelector('.lb-close').addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+    let x0 = null;
+    dlg.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    dlg.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+  }
+}
