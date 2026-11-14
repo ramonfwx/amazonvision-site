@@ -793,3 +793,33 @@ code { font-size: .9em; }
   .g-swap .swap-b { opacity: 0; }
   .faq-item summary::after, .open-badge.is-open::before { transition: none; animation: none; }
 }
+
+/* ---------- Smoother crossfades with alternating zoom (in / out) ---------- */
+/* "A clínica": 3 photos, 6 s each, 2 s crossfade */
+.about-cycle img { animation-name: av-fade, av-zoom-in; animation-duration: 18s, 18s; animation-timing-function: ease-in-out, linear; animation-iteration-count: infinite, infinite; will-change: opacity, transform; }
+.about-cycle img:nth-of-type(2) { animation-name: av-fade, av-zoom-out; }
+.about-cycle figcaption span { animation: av-fade 18s ease-in-out infinite; }
+@keyframes av-fade { 0%, 22.2% { opacity: 1; } 33.3%, 88.9% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes av-zoom-in { 0% { transform: scale(1.03); } 33.3% { transform: scale(1.1); } 50%, 88.9% { transform: scale(1); } 100% { transform: scale(1.03); } }
+@keyframes av-zoom-out { 0% { transform: scale(1.07); } 33.3% { transform: scale(1); } 50%, 88.9% { transform: scale(1.1); } 100% { transform: scale(1.07); } }
+
+/* Gallery tile: 2 photos, 5 s each, 2 s crossfade; first zooms in, second zooms out */
+.g-swap .g-open img:first-child { animation: gs-zoom-in 10s linear infinite; will-change: transform; }
+.g-swap .swap-b { animation: gs-fade 10s ease-in-out infinite, gs-zoom-out 10s linear infinite; will-change: opacity, transform; }
+.g-swap .cap-b { animation: gs-fade 10s ease-in-out infinite; }
+.g-swap .cap-a { animation: gs-fade-inv 10s ease-in-out infinite; }
+@keyframes gs-fade { 0%, 30% { opacity: 0; } 50%, 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gs-fade-inv { 0%, 30% { opacity: 1; } 50%, 80% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes gs-zoom-in { 0% { transform: scale(1.02); } 50% { transform: scale(1.08); } 55%, 80% { transform: scale(1); } 100% { transform: scale(1.02); } }
+@keyframes gs-zoom-out { 0% { transform: scale(1); } 30% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-cycle img, .about-cycle figcaption span, .g-swap .g-open img:first-child, .g-swap .swap-b, .g-swap .cap-a, .g-swap .cap-b { animation: none; }
+  .about-cycle img:nth-of-type(1), .about-cycle figcaption span:nth-child(1), .g-swap .cap-a { opacity: 1; }
+  .g-swap .swap-b, .g-swap .cap-b { opacity: 0; }
+}
+/* the outgoing photo only fades after the incoming one is fully visible: no background bleed */
+.about-cycle img { animation-name: av-fade-hold, av-zoom-in; }
+.about-cycle img:nth-of-type(2) { animation-name: av-fade-hold, av-zoom-out; }
+@keyframes av-fade-hold { 0%, 33.3% { opacity: 1; } 44.4%, 88.9% { opacity: 0; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .about-cycle img { animation: none; } }
