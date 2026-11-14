@@ -181,15 +181,27 @@ document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Dat
   if (dlg && buttons.length && typeof dlg.showModal === 'function') {
     const img = dlg.querySelector('.lb-img');
     const cap = dlg.querySelector('.lb-cap');
+    // Uma lista com todas as fotos (o quadro que alterna tem duas).
+    const photos = [];
+    buttons.forEach((b) => {
+      const figCap = b.closest('figure').querySelector('figcaption').textContent;
+      b.querySelectorAll('img').forEach((im) => photos.push({ im, button: b, cap: im.dataset.cap || figCap }));
+    });
     let current = 0;
     const show = (i) => {
-      current = (i + buttons.length) % buttons.length;
-      const thumb = buttons[current].querySelector('img');
-      img.src = thumb.dataset.full;
-      img.alt = thumb.alt;
-      cap.textContent = buttons[current].closest('figure').querySelector('figcaption').textContent;
+      current = (i + photos.length) % photos.length;
+      const p = photos[current];
+      img.src = p.im.dataset.full;
+      img.alt = p.im.alt;
+      cap.textContent = p.cap;
     };
-    buttons.forEach((b, i) => b.addEventListener('click', () => { show(i); dlg.showModal(); }));
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      // No quadro que alterna, abre a foto que está aparecendo no momento.
+      const imgs = [...b.querySelectorAll('img')];
+      const visible = imgs.filter((im) => parseFloat(getComputedStyle(im).opacity) > 0.5).pop() || imgs[0];
+      show(photos.findIndex((p) => p.im === visible));
+      dlg.showModal();
+    }));
     dlg.querySelector('.lb-prev').addEventListener('click', () => show(current - 1));
     dlg.querySelector('.lb-next').addEventListener('click', () => show(current + 1));
     dlg.querySelector('.lb-close').addEventListener('click', () => dlg.close());

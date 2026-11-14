@@ -682,3 +682,17 @@ code { font-size: .9em; }
 .lb-next { right: 2vw; top: 50%; transform: translateY(-50%); }
 .lb-close { right: 2vw; top: 2vh; }
 @media (prefers-reduced-motion: reduce) { .g-photo img { transition: none; } }
+
+/* Gallery tile that alternates two photos (exam room + equipment) */
+.g-swap .g-open { position: relative; }
+.g-swap .swap-b { position: absolute; inset: 0; animation: swap-fade 10s ease-in-out infinite; }
+.g-swap figcaption { display: grid; }
+.g-swap figcaption span { grid-area: 1 / 1; white-space: nowrap; }
+.g-swap .cap-a { animation: swap-fade-out 10s ease-in-out infinite; }
+.g-swap .cap-b { opacity: 0; animation: swap-fade 10s ease-in-out infinite; }
+@keyframes swap-fade { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes swap-fade-out { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .g-swap .swap-b, .g-swap .cap-b { animation: none; opacity: 0; }
+  .g-swap .cap-a { animation: none; }
+}
