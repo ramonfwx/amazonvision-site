@@ -696,3 +696,23 @@ code { font-size: .9em; }
   .g-swap .swap-b, .g-swap .cap-b { animation: none; opacity: 0; }
   .g-swap .cap-a { animation: none; }
 }
+
+/* "Uma clínica nova": facade by day, facade at night and the office, alternating */
+.about-cycle { position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-photo); overflow: hidden; box-shadow: 0 18px 40px rgba(30, 58, 43, .18); max-width: 460px; justify-self: center; width: 100%; }
+.about-cycle img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border-radius: 0; box-shadow: none; opacity: 0; animation: about-cycle 18s ease-in-out infinite; }
+.about-cycle img:nth-of-type(1) { object-position: 50% 30%; }
+.about-cycle img:nth-of-type(2) { object-position: 50% 30%; animation-delay: -12s; }
+.about-cycle img:nth-of-type(3) { animation-delay: -6s; }
+.about-cycle figcaption { position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%); display: grid; padding: .35rem .85rem; border-radius: 999px; background: rgba(251, 248, 241, .92); color: var(--forest); font-size: .8rem; font-weight: 500; }
+.about-cycle figcaption span { grid-area: 1 / 1; text-align: center; white-space: nowrap; opacity: 0; animation: about-cycle 18s ease-in-out infinite; }
+.about-cycle figcaption span:nth-child(2) { animation-delay: -12s; }
+.about-cycle figcaption span:nth-child(3) { animation-delay: -6s; }
+@keyframes about-cycle { 0%, 30% { opacity: 1; } 35%, 95% { opacity: 0; } 100% { opacity: 1; } }
+@media (max-width: 719px) {
+  .about-cycle { aspect-ratio: 4 / 5; border-radius: 140px 140px 14px 14px; }
+  .about-cycle img { aspect-ratio: auto; border-radius: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-cycle img, .about-cycle figcaption span { animation: none; }
+  .about-cycle img:nth-of-type(1), .about-cycle figcaption span:nth-child(1) { opacity: 1; }
+}
